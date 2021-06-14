@@ -8,8 +8,9 @@ import android.content.Intent
 class BroadcastAudioBroadcastReciever : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent) {
         val action = intent.action
+        print("play song aga")
         if (action.equals("com.example.app.ACTION_PLAY", ignoreCase = true)) {
-print("play song aga")
+                print("play song aga")
 
         }
     }
