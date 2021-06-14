@@ -3,6 +3,7 @@ package com.example.test.broadcast
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.widget.Toast
 
 
 class BroadcastAudioBroadcastReciever : BroadcastReceiver() {
@@ -10,8 +11,7 @@ class BroadcastAudioBroadcastReciever : BroadcastReceiver() {
         val action = intent.action
         print("play song aga")
         if (action.equals("com.example.app.ACTION_PLAY", ignoreCase = true)) {
-                print("play song aga")
-
+Toast.makeText(context,"STUFF",Toast.LENGTH_LONG).show()
         }
     }
 }

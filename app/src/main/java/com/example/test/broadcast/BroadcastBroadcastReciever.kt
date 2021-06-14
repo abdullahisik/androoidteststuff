@@ -10,6 +10,7 @@ import com.example.test.foreground.ForegroundService
 
 class BroadcastBroadcastReciever : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
+        print("triggered")
         if (Intent.ACTION_BOOT_COMPLETED == intent!!.action) {
             val serviceIntent = Intent(context, ForegroundService::class.java)
             serviceIntent.putExtra("inputExtra", "test")
