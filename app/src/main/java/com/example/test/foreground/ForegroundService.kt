@@ -1,17 +1,12 @@
 package com.example.test.foreground
 
 import android.annotation.SuppressLint
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
-import com.example.test.MainActivity
 import com.example.test.R
 
 
@@ -53,7 +48,13 @@ public var channel_id : String = "someid"
 //            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 //        }
 //        val pending: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
+        val switchIntent = Intent("com.example.app.ACTION_PLAY")
+        val pendingSwitchIntent = PendingIntent.getBroadcast(this, 100, switchIntent, 0)
+
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
+        notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, pendingSwitchIntent);
+
+
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText("test")

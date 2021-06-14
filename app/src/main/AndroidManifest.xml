@@ -24,5 +24,10 @@
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
+        <receiver android:name="com.example.test.broadcast.BroadcastAudioBroadcastReciever" >
+            <intent-filter>
+                <action android:name="com.example.app.ACTION_PLAY" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>
