@@ -25,6 +25,13 @@ class AudioReceiver : BroadcastReceiver() {
         }
         if (intent.action == "ACTION_PLAY") {
             Toast.makeText(context, "play", Toast.LENGTH_LONG).show()
+
+
+
+
+
+
+
         }
     }
 }

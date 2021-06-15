@@ -69,11 +69,11 @@ class ForegroundService : Service() {
         val playPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         notificationLayout.setTextViewText(R.id.notification_title, "Notification")
-        bundle.putString("button_pause","pause")
+
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
-        bundle.putString("button_next","next")
+
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
-        bundle.putString("button_previous","previous")
+
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
 
 
