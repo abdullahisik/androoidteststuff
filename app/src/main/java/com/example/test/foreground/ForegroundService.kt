@@ -43,16 +43,7 @@ public var channel_id : String = "someid"
             )
             manager.createNotificationChannel(serviceChannel)
         }
-//        val notificationIntent = Intent(this, MainActivity::class.java)
-//        val pendingIntent = PendingIntent.getActivity(
-//            this,
-//            0, notificationIntent, 0
-//        )
-//        val intent = Intent(this, MainActivity::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//        val pending: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
+        
 
         val switchIntent = Intent(this, BroadcastBroadcastReciever::class.java)
         val pendingSwitchIntent = PendingIntent.getBroadcast(this, 100, switchIntent, 0)
