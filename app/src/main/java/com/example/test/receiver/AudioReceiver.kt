@@ -16,8 +16,16 @@ class AudioReceiver : BroadcastReceiver() {
     }
 
     override fun onReceive(context: Context?, intent: Intent) {
-
-
+        val extras = intent.extras
+        if (intent.action == "ACTION_PREVIOUS") {
+            Toast.makeText(context, "previous", Toast.LENGTH_LONG).show()
+        }
+        if (intent.action == "ACTION_NEXT") {
+            Toast.makeText(context, "next", Toast.LENGTH_LONG).show()
+        }
+        if (intent.action == "ACTION_PLAY") {
+            Toast.makeText(context, "play", Toast.LENGTH_LONG).show()
+        }
     }
 }
 

@@ -59,26 +59,22 @@ class ForegroundService : Service() {
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
 
 
-        TODO("buraya bakılacak")
-
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PREVIOUS)
-        val prevPendingIntent = PendingIntent.getBroadcast(this, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val prevPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val nextIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_NEXT)
-        val nextPendingIntent = PendingIntent.getBroadcast(this, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val nextPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
 
         val playIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PLAY)
-        val playPendingIntent = PendingIntent.getBroadcast(this, 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-     notificationLayout.setTextViewText(R.id.notification_title, "")
+        val playPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        notificationLayout.setTextViewText(R.id.notification_title, "Notification")
         bundle.putString("button_pause","pause")
-        notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, pendingSwitchIntent);
-
+        notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         bundle.putString("button_next","next")
-        notificationLayout.setOnClickPendingIntent(R.id.button_next_song, pendingSwitchIntent);
-
+        notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
         bundle.putString("button_previous","previous")
-        notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, pendingSwitchIntent);
-
+        notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
 
 
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
