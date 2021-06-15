@@ -22,16 +22,12 @@ class MusicService : Service() {
                 mediaPlayer.seekTo(mediaPlayer.currentPosition)
                 mediaPlayer.start()
                 pause = false
-
             }else{
-
                 mediaPlayer = MediaPlayer.create(applicationContext,R.raw.song_1)
                 mediaPlayer.start()
                 mediaPlayer.isPlaying
             }
-
-
-            mediaPlayer.setOnCompletionListener {
+         mediaPlayer.setOnCompletionListener {
 
             }
 

@@ -3,10 +3,11 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import com.example.test.foreground.ForegroundService
+import com.example.test.service.ForegroundService
 
 
 class MainActivity : AppCompatActivity() {

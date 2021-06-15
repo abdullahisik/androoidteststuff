@@ -17,7 +17,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".foreground.ForegroundService" />
+        <service android:name=".service.ForegroundService" />
         <receiver android:name=".receiver.ForegroundReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -26,7 +26,7 @@
         </receiver>
         <receiver android:name="com.example.test.receiver.AudioReceiver" >
             <intent-filter>
-                <action android:name="com.example.app.ACTION_PLAY" />
+                <action android:name="com.example.test.ACTION_PLAY" />
             </intent-filter>
         </receiver>
     </application>
