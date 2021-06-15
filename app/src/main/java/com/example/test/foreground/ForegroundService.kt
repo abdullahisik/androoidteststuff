@@ -8,6 +8,7 @@ import android.os.IBinder
 import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import com.example.test.R
+import com.example.test.broadcast.BroadcastBroadcastReciever
 
 
 class ForegroundService : Service() {
@@ -21,10 +22,13 @@ public var channel_id : String = "someid"
         startInForeground()
         return START_STICKY
     }
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
+
+
+
+
 
     @SuppressLint("RemoteViewLayout")
     private fun startInForeground() {
@@ -48,13 +52,12 @@ public var channel_id : String = "someid"
 //            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
 //        }
 //        val pending: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val switchIntent = Intent("com.example.app.ACTION_PLAY")
-        val pendingSwitchIntent = PendingIntent.getBroadcast(this, 100, switchIntent, 0)
 
+
+        val switchIntent = Intent(this, BroadcastBroadcastReciever::class.java)
+        val pendingSwitchIntent = PendingIntent.getBroadcast(this, 100, switchIntent, 0)
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, pendingSwitchIntent);
-
-
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText("test")

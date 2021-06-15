@@ -39,6 +39,8 @@
         android:layout_weight="1"
         android:background="@android:drawable/ic_media_previous"
         app:iconGravity="textStart"
+        android:focusable="true"
+        android:clickable="true"
 
 
         />
@@ -50,6 +52,8 @@
         android:layout_weight="1"
         android:background="@android:drawable/ic_media_pause"
         app:iconGravity="textStart"
+        android:focusable="true"
+        android:clickable="true"
 
         />
 
@@ -60,6 +64,8 @@
         android:layout_weight="1"
         android:background="@android:drawable/ic_media_next"
         app:iconGravity="textStart"
+        android:focusable="true"
+        android:clickable="true"
 
         />
 
