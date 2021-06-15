@@ -21,13 +21,14 @@ class MainActivity : AppCompatActivity() {
         val buttonCloseService: Button? = findViewById<Button>(R.id.button_close_service)
 
         buttonStartService?.setOnClickListener() {
-                startservıce()
-            }
+            startservıce()
+        }
         buttonCloseService?.setOnClickListener() {
             stopService()
         }
     }
-     public fun  startservıce() {
+
+    public fun startservıce() {
 
         val serviceIntent = Intent(this, ForegroundService::class.java)
         serviceIntent.putExtra("inputExtra", "test")

@@ -17,18 +17,17 @@ class ForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
     }
+
     val CHANNEL_ID = "test"
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         startInForeground()
         return START_STICKY
     }
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
-
-
 
 
     @SuppressLint("RemoteViewLayout")
@@ -46,16 +45,18 @@ class ForegroundService : Service() {
         }
         val switchIntent = Intent(applicationContext, AudioReceiver::class.java)
         val bundle = Bundle()
-        bundle.putString("state","bundle work")
-        switchIntent.putExtra("test","test")
-        val pendingSwitchIntent = PendingIntent.getBroadcast(applicationContext, 100, switchIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingSwitchIntent = PendingIntent.getBroadcast(
+            applicationContext,
+            100,
+            switchIntent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
         notificationLayout.setTextViewText(R.id.notification_title, "")
 
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, pendingSwitchIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, pendingSwitchIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, pendingSwitchIntent);
-        Log.d("TAG", "my Message")
 
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
@@ -64,6 +65,6 @@ class ForegroundService : Service() {
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
             .build()
-            startForeground(1, notification)
+        startForeground(1, notification)
     }
 }

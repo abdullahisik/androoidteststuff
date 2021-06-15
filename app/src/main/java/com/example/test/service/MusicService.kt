@@ -29,8 +29,7 @@ class MusicService : Service() {
             }
          mediaPlayer.setOnCompletionListener {
 
-            }
-
+           }
         }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {

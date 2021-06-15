@@ -12,7 +12,8 @@ class ForegroundReceiver : BroadcastReceiver() {
         if (Intent.ACTION_BOOT_COMPLETED == intent!!.action) {
             val serviceIntent = Intent(context, ForegroundService::class.java)
             serviceIntent.putExtra("inputExtra", "test")
-            context?.let { ContextCompat.startForegroundService(it, serviceIntent)
+            context?.let {
+                ContextCompat.startForegroundService(it, serviceIntent)
 
             }
         }
