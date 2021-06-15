@@ -18,13 +18,13 @@
             </intent-filter>
         </activity>
         <service android:name=".foreground.ForegroundService" />
-        <receiver android:name=".broadcast.BroadcastBroadcastReciever">
+        <receiver android:name=".receiver.ForegroundReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.example.test.broadcast.BroadcastAudioBroadcastReciever" >
+        <receiver android:name="com.example.test.receiver.AudioReceiver" >
             <intent-filter>
                 <action android:name="com.example.app.ACTION_PLAY" />
             </intent-filter>

@@ -1,14 +1,13 @@
-package com.example.test.broadcast
+package com.example.test.receiver
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import androidx.core.content.ContextCompat
-import com.example.test.MainActivity
 import com.example.test.foreground.ForegroundService
 
 
-class BroadcastBroadcastReciever : BroadcastReceiver() {
+class ForegroundReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         print("triggered")
         if (Intent.ACTION_BOOT_COMPLETED == intent!!.action) {
