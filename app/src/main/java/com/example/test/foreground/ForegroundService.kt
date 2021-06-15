@@ -57,6 +57,7 @@ public var channel_id : String = "someid"
         val switchIntent = Intent(this, BroadcastBroadcastReciever::class.java)
         val pendingSwitchIntent = PendingIntent.getBroadcast(this, 100, switchIntent, 0)
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
+        notificationLayout.setTextViewText(R.id.notification_title, "Notification")
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, pendingSwitchIntent);
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
