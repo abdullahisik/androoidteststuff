@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <service android:name=".service.ForegroundService" />
+        <service android:name=".service.MusicService"/>
         <receiver android:name=".receiver.ForegroundReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />

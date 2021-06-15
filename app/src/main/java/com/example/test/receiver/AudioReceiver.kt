@@ -3,10 +3,8 @@ package com.example.test.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
-import android.view.KeyEvent
 import android.widget.Toast
-import java.util.logging.Handler
+import com.example.test.service.MusicService
 
 
 class AudioReceiver : BroadcastReceiver() {
@@ -25,13 +23,8 @@ class AudioReceiver : BroadcastReceiver() {
         }
         if (intent.action == "ACTION_PLAY") {
             Toast.makeText(context, "play", Toast.LENGTH_LONG).show()
-
-
-
-
-
-
-
+            val startIntent = Intent(context,MusicService::class.java)
+            context?.startService(startIntent)
         }
     }
 }

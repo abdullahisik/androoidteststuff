@@ -14,10 +14,11 @@ class MusicService : Service() {
     private lateinit var mediaPlayer: MediaPlayer
     private lateinit var runnable:Runnable
     private var handler: Handler = Handler()
-    private var pause:Boolean = false
+    private var pause:Boolean = true
     override fun onCreate() {
         super.onCreate()
 
+        TODO("BURDA KALDIK")
             if(pause){
                 mediaPlayer.seekTo(mediaPlayer.currentPosition)
                 mediaPlayer.start()
