@@ -10,14 +10,8 @@ import java.util.logging.Handler
 
 
 class AudioReceiver : BroadcastReceiver() {
+
     companion object {
-
-        private const val MAX_CLICK_DURATION = 700
-
-        private var mContext: Context? = null
-
-        private var mClicksCnt = 0
-
 
     }
 

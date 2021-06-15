@@ -26,7 +26,10 @@
         </receiver>
         <receiver android:name="com.example.test.receiver.AudioReceiver" >
             <intent-filter>
-                <action android:name="com.example.test.ACTION_PLAY" />
+                <action android:name="com.example.test.action.PREVIOUS"/>
+                <action android:name="com.example.test.action.PAUSE"/>
+                <action android:name="com.example.test.action.PLAYPAUSE"/>
+                <action android:name="com.example.test.action.NEXT"/>
             </intent-filter>
         </receiver>
     </application>
