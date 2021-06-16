@@ -18,12 +18,9 @@ import com.example.test.receiver.AudioReceiver
 
 
 class ForegroundService : Service() {
-
-
     override fun onCreate() {
         super.onCreate()
     }
-
     val CHANNEL_ID = "test"
     companion object {
  fun notifyui() {
@@ -32,18 +29,16 @@ class ForegroundService : Service() {
     const val ACTION_NEXT = "ACTION_NEXT"
     const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
     const val ACTION_PLAY = "ACTION_PLAY"
-
+        const val ACTION_DUCK = "ACTION_DUCK"
 }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent?.extras
         startInForeground(false)
         return START_STICKY
     }
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
     @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables")
     private fun startInForeground(boolState : Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -65,13 +60,19 @@ class ForegroundService : Service() {
             switchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-        val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
+
+       // val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
+
+        val notificationLayout = getCombinedRemoteViews(true)
+
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nextIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_NEXT)
         val nextPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val playIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PLAY)
         val playPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val duckIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_DUCK)
+        val duckPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, duckIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         notificationLayout.setTextViewText(R.id.notification_title, "Noitfication")
         val drawableIcMediaPrevious= resources.getDrawable(android.R.drawable.ic_media_previous)
         notificationLayout.setImageViewBitmap(R.id.button_previous_song,drawableToBitmap(drawableIcMediaPrevious))
@@ -81,11 +82,11 @@ class ForegroundService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         if(MainActivity.boolIconState) {
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
-        notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-        }
+        notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay)) }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
+        notificationLayout.setOnClickPendingIntent(R.id.imageDuckView,duckPendingIntent)
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText("test")
@@ -95,6 +96,7 @@ class ForegroundService : Service() {
             .build()
         startForeground(1, notification)
     }
+
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         var bitmap: Bitmap? = null
         if (drawable is BitmapDrawable) {
@@ -121,4 +123,45 @@ class ForegroundService : Service() {
         drawable.draw(canvas)
         return bitmap
     }
+    private fun getCombinedRemoteViews(collapsed: Boolean): RemoteViews {
+        val remoteViews = RemoteViews(packageName, R.layout.notification_layout)
+        return remoteViews
+    }
+    object SampleSingleton {
+        fun someMethod() : RemoteViews {
+            val remoteViews = RemoteViews("come.example.test", R.layout.notification_layout)
+
+            return remoteViews
+        }
+        fun drawableToBitmap(drawable: Drawable): Bitmap? {
+            var bitmap: Bitmap? = null
+            if (drawable is BitmapDrawable) {
+                val bitmapDrawable = drawable
+                if (bitmapDrawable.bitmap != null) {
+                    return bitmapDrawable.bitmap
+                }
+            }
+            bitmap = if (drawable.intrinsicWidth <= 0 || drawable.intrinsicHeight <= 0) {
+                Bitmap.createBitmap(
+                    1,
+                    1,
+                    Bitmap.Config.ARGB_8888
+                ) // Single color bitmap will be created of 1x1 pixel
+            } else {
+                Bitmap.createBitmap(
+                    drawable.intrinsicWidth,
+                    drawable.intrinsicHeight,
+                    Bitmap.Config.ARGB_8888
+                )
+            }
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight())
+            drawable.draw(canvas)
+            return bitmap
+        }
+
+    }
+
+
+
 }

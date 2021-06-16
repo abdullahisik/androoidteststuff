@@ -3,10 +3,8 @@ package com.example.test
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
+import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.test.service.ForegroundService
@@ -33,6 +31,11 @@ companion object {
             stopService()
             boolIconState = false
         }
+        val layoutId = resources.getIdentifier(
+            "layout_simulated_notification", "layout",
+            packageName
+        )
+
         this@MainActivity.runOnUiThread(java.lang.Runnable {
 
 

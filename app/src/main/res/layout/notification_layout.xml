@@ -3,11 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-
-
-    >
-
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/notification_title"
@@ -26,7 +22,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/imageDuckView"
         android:layout_width="2dp"
         android:layout_height="48dp"
         android:layout_weight="1"
@@ -40,10 +36,8 @@
         app:iconGravity="textStart"
         android:focusable="true"
         android:clickable="true"
-android:background="@color/white"
-
+        android:background="@color/white"
         />
-
     <ImageButton
         android:id="@+id/button_pause_song"
         android:layout_width="5dp"
@@ -53,7 +47,6 @@ android:background="@color/white"
         android:focusable="true"
         android:clickable="true"
         android:background="@color/white"
-
         />
 
     <ImageButton
@@ -65,7 +58,6 @@ android:background="@color/white"
         android:focusable="true"
         android:clickable="true"
         android:background="@color/white"
-
         />
 
 </LinearLayout>
