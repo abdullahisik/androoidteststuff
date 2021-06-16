@@ -9,9 +9,6 @@ import com.example.test.service.MusicService
 
 class AudioReceiver : BroadcastReceiver() {
 
-    companion object {
-
-    }
 
     override fun onReceive(context: Context?, intent: Intent) {
         val extras = intent.extras
