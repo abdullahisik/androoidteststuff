@@ -66,7 +66,6 @@ class ForegroundService : Service() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
         val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
-
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nextIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_NEXT)
@@ -80,16 +79,13 @@ class ForegroundService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_next_song,drawableToBitmap(drawableIcMediaNext))
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-if(MainActivity.boolIconState) {
-    val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
-    notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-}
-
-
+        if(MainActivity.boolIconState) {
+        val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
+        notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+        }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
-
         val notification: Notification? = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(getString(R.string.app_name))
             .setContentText("test")
@@ -125,6 +121,4 @@ if(MainActivity.boolIconState) {
         drawable.draw(canvas)
         return bitmap
     }
-
-
 }
