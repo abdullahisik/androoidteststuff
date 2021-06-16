@@ -14,7 +14,6 @@ class ForegroundReceiver : BroadcastReceiver() {
             serviceIntent.putExtra("inputExtra", "test")
             context?.let {
                 ContextCompat.startForegroundService(it, serviceIntent)
-
             }
         }
     }

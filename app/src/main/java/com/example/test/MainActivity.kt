@@ -22,14 +22,11 @@ companion object {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         val buttonStartService: Button? = findViewById<Button>(R.id.button_start_service)
         val buttonCloseService: Button? = findViewById<Button>(R.id.button_close_service)
-
         buttonStartService?.setOnClickListener() {
             boolIconState = true
             startservıce()
-
 
         }
         buttonCloseService?.setOnClickListener() {
@@ -39,14 +36,11 @@ companion object {
         this@MainActivity.runOnUiThread(java.lang.Runnable {
 
 
-
-
         })
 
     }
 
     public fun startservıce() {
-
         val serviceIntent = Intent(this, ForegroundService::class.java)
         serviceIntent.putExtra("inputExtra", "test")
         ContextCompat.startForegroundService(this, serviceIntent)

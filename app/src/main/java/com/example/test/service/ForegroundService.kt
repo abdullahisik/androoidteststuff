@@ -83,7 +83,6 @@ class ForegroundService : Service() {
 if(MainActivity.boolIconState) {
     val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
     notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-
 }
 
 
