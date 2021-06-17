@@ -2,15 +2,18 @@ package com.example.test.service
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.example.test.MainActivity
 import com.example.test.R
@@ -21,11 +24,107 @@ class MusicService : Service() {
         return null
     }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val extras = intent?.extras
+        val actionName = intent?.getStringExtra("myAction")
+        intent?.action
         startInForeground(true)
+        var index = 0
+        var myArray = arrayOf<Int>(
+            com.example.test.R.raw.song_1,
+            com.example.test.R.raw.song_2,
+            com.example.test.R.raw.song_3
+        )
+        var mp: MediaPlayer? = null
+        if (intent?.action == "ACTION_PREVIOUS") {
+            Toast.makeText(applicationContext, "previous", Toast.LENGTH_LONG).show()
+            if (index != 0) {
+                if (mp != null && mp.isPlaying()) {
+                    mp.reset()
+                    mp.stop()
+                    mp.release()
+
+                } else {
+
+                }
+                mp = MediaPlayer.create(applicationContext, myArray[index])
+                mp.start()
+                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+                    if (!mp.isPlaying) {
+                        mp.release()
+                    } else {
+                        mp.reset()
+                        mp.stop()
+                        mp.release()
+                    }
+                })
+            }
+        }
+        if (intent?.action == "ACTION_NEXT") {
+            Toast.makeText(applicationContext, "next", Toast.LENGTH_LONG).show()
+            index += 1
+            if (index != 0 && myArray.size >= index) {
+                if (mp != null && mp.isPlaying()) {
+                    mp.stop()
+                    mp.reset()
+                    mp.release()
+                } else {
+
+                }
+                mp = MediaPlayer.create(applicationContext, myArray[index])
+                mp.start()
+                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+                    if (!mp.isPlaying) {
+                        mp.release()
+                    } else {
+                        mp.reset()
+                        mp.stop()
+                        mp.release()
+                    }
+                })
+            }
+        }
+        if (intent?.action == "ACTION_PLAY") {
+            if (mp != null && mp.isPlaying()) {
+                mp.stop()
+                mp.release()
+            } else {
+
+            }
+            mp = MediaPlayer.create(applicationContext, myArray[index])
+            mp.start()
+        }
+        mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+            if (!mp.isPlaying) {
+                mp.release()
+            } else {
+                mp.reset()
+                mp.stop()
+                mp.release()
+            }
+        })
+
+        if (intent?.action == "ACTION_DUCK") {
+            Toast.makeText(applicationContext, "DUCK", Toast.LENGTH_LONG).show()
+            if (mp != null && mp.isPlaying()) {
+                mp.stop()
+                mp.release()
+
+            } else {
+
+            }
+            mp = MediaPlayer.create(applicationContext, R.raw.duck_mania)
+            mp.start()
+            mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+                if (!mp.isPlaying) {
+                    mp.release()
+                } else {
+                    mp.reset()
+                    mp.stop()
+                    mp.release()
+                }
+            })
+        }
         return START_STICKY
     }
-
     @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables")
     private fun startInForeground(boolState : Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -47,9 +146,7 @@ class MusicService : Service() {
             switchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-
         // val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
-
         val notificationLayout = getCombinedRemoteViews(true)
 
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ForegroundService.ACTION_PREVIOUS)
@@ -67,9 +164,10 @@ class MusicService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_next_song,drawableToBitmap(drawableIcMediaNext))
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-        if(MainActivity.boolIconState) {
+        if(ForegroundService.boolState){
             val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
-            notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay)) }
+            notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+        }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
@@ -83,7 +181,6 @@ class MusicService : Service() {
             .build()
         startForeground(1, notification)
     }
-
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         var bitmap: Bitmap? = null
         if (drawable is BitmapDrawable) {

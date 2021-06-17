@@ -29,7 +29,8 @@ class ForegroundService : Service() {
     const val ACTION_NEXT = "ACTION_NEXT"
     const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
     const val ACTION_PLAY = "ACTION_PLAY"
-        const val ACTION_DUCK = "ACTION_DUCK"
+    const val ACTION_DUCK = "ACTION_DUCK"
+    var boolState : Boolean = false
 }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent?.extras
@@ -60,11 +61,8 @@ class ForegroundService : Service() {
             switchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-
        // val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
-
         val notificationLayout = getCombinedRemoteViews(true)
-
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nextIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_NEXT)

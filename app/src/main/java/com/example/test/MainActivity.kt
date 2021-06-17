@@ -8,6 +8,7 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.test.service.ForegroundService
+import com.example.test.service.MusicService
 
 
 class MainActivity : AppCompatActivity() {
@@ -53,5 +54,7 @@ companion object {
     public fun stopService() {
         val serviceIntent = Intent(this, ForegroundService::class.java)
         stopService(serviceIntent)
+        val MusicserviceIntent = Intent(this, MusicService::class.java)
+        stopService(MusicserviceIntent)
     }
 }
