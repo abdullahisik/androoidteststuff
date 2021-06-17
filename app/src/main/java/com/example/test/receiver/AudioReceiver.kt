@@ -1,5 +1,6 @@
 package com.example.test.receiver
 
+import android.app.Service.START_STICKY
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -10,8 +11,10 @@ import android.media.MediaPlayer.OnCompletionListener
 import android.opengl.ETC1.getHeight
 import android.opengl.ETC1.getWidth
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.test.R
 import com.example.test.service.ForegroundService
+import com.example.test.service.MusicService
 
 
 class AudioReceiver : BroadcastReceiver() {
@@ -19,6 +22,35 @@ class AudioReceiver : BroadcastReceiver() {
 
     var index: Int = 0
     override fun onReceive(context: Context?, intent: Intent) {
+
+
+
+        val actionName = intent?.getStringExtra("myAction")
+
+        val intent2 = Intent(context, MusicService::class.java)
+
+        if(intent?.action != null){
+            when(intent.action){
+                ForegroundService.ACTION_PREVIOUS -> {
+                    intent2.putExtra("myAction", intent.action)
+                    context?.startService(intent2)
+                }
+                ForegroundService.ACTION_NEXT -> {
+                    intent2.putExtra("myAction", intent.action)
+                    context?.startService(intent2)
+                }
+                ForegroundService.ACTION_PLAY -> {
+                    intent2.putExtra("myAction", intent.action)
+                    context?.startService(intent2)
+                }
+            }
+        }
+
+
+
+
+
+
         var myArray = arrayOf<Int>(
             com.example.test.R.raw.song_1,
             com.example.test.R.raw.song_2,
@@ -76,12 +108,6 @@ class AudioReceiver : BroadcastReceiver() {
         }
 
         if (intent.action == "ACTION_PLAY") {
-val notifylayout =  ForegroundService.SampleSingleton.someMethod()
-            val bitmap = Bitmap.createBitmap(5, 5, Bitmap.Config.ARGB_8888)
-            //set the background color of the bitmap to RED
-            //set the background color of the bitmap to RED
-            bitmap.eraseColor(Color.RED)
-notifylayout.setImageViewBitmap(R.drawable.ic_launcher_foreground,bitmap)
             if (mp != null && mp.isPlaying()) {
                 mp.stop()
                 mp.release()
