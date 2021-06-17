@@ -2,7 +2,6 @@ package com.example.test.service
 
 import android.annotation.SuppressLint
 import android.app.*
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -15,7 +14,6 @@ import android.os.IBinder
 import android.widget.RemoteViews
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.example.test.MainActivity
 import com.example.test.R
 import com.example.test.receiver.AudioReceiver
 
@@ -23,16 +21,27 @@ class MusicService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
+    companion object {
+        var index = 0
+
+    }
+
+    var songNameArray = arrayOf<String>(
+        "song_!",
+        "song_2",
+        "song_3",
+
+        )
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val actionName = intent?.getStringExtra("myAction")
         intent?.action
         startInForeground(true)
-        var index = 0
-        var myArray = arrayOf<Int>(
+        var songArray = arrayOf<Int>(
             com.example.test.R.raw.song_1,
             com.example.test.R.raw.song_2,
             com.example.test.R.raw.song_3
         )
+
         var mp: MediaPlayer? = null
         if (intent?.action == "ACTION_PREVIOUS") {
             Toast.makeText(applicationContext, "previous", Toast.LENGTH_LONG).show()
@@ -45,7 +54,7 @@ class MusicService : Service() {
                 } else {
 
                 }
-                mp = MediaPlayer.create(applicationContext, myArray[index])
+                mp = MediaPlayer.create(applicationContext, songArray[index])
                 mp.start()
                 mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
                     if (!mp.isPlaying) {
@@ -61,7 +70,7 @@ class MusicService : Service() {
         if (intent?.action == "ACTION_NEXT") {
             Toast.makeText(applicationContext, "next", Toast.LENGTH_LONG).show()
             index += 1
-            if (index != 0 && myArray.size >= index) {
+            if (index != 0 && songArray.size >= index) {
                 if (mp != null && mp.isPlaying()) {
                     mp.stop()
                     mp.reset()
@@ -69,7 +78,7 @@ class MusicService : Service() {
                 } else {
 
                 }
-                mp = MediaPlayer.create(applicationContext, myArray[index])
+                mp = MediaPlayer.create(applicationContext, songArray[index])
                 mp.start()
                 mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
                     if (!mp.isPlaying) {
@@ -89,7 +98,7 @@ class MusicService : Service() {
             } else {
 
             }
-            mp = MediaPlayer.create(applicationContext, myArray[index])
+            mp = MediaPlayer.create(applicationContext, songArray[index])
             mp.start()
         }
         mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
@@ -148,7 +157,6 @@ class MusicService : Service() {
         )
         // val notificationLayout = RemoteViews(packageName, R.layout.notification_layout)
         val notificationLayout = getCombinedRemoteViews(true)
-
         val prevIntent = Intent(this, AudioReceiver::class.java).setAction(ForegroundService.ACTION_PREVIOUS)
         val prevPendingIntent = PendingIntent.getBroadcast(applicationContext, 0, prevIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val nextIntent = Intent(this, AudioReceiver::class.java).setAction(ForegroundService.ACTION_NEXT)
@@ -157,7 +165,7 @@ class MusicService : Service() {
         val playPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val duckIntent = Intent(this, AudioReceiver::class.java).setAction(ForegroundService.ACTION_DUCK)
         val duckPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, duckIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        notificationLayout.setTextViewText(R.id.notification_title, "Olur gibi")
+        notificationLayout.setTextViewText(R.id.notification_title, songNameArray[index])
         val drawableIcMediaPrevious= resources.getDrawable(android.R.drawable.ic_media_previous)
         notificationLayout.setImageViewBitmap(R.id.button_previous_song,drawableToBitmap(drawableIcMediaPrevious))
         val drawableIcMediaNext = resources.getDrawable(android.R.drawable.ic_media_next)
@@ -179,6 +187,7 @@ class MusicService : Service() {
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
             .build()
+        notification!!.flags = notification.flags or Notification.FLAG_AUTO_CANCEL
         startForeground(1, notification)
     }
     fun drawableToBitmap(drawable: Drawable): Bitmap? {

@@ -94,7 +94,6 @@ class ForegroundService : Service() {
             .build()
         startForeground(1, notification)
     }
-
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         var bitmap: Bitmap? = null
         if (drawable is BitmapDrawable) {

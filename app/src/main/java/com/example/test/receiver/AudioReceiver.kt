@@ -1,18 +1,9 @@
 package com.example.test.receiver
 
-import android.app.Service.START_STICKY
+
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.Color
-import android.media.MediaPlayer
-import android.media.MediaPlayer.OnCompletionListener
-import android.opengl.ETC1.getHeight
-import android.opengl.ETC1.getWidth
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import com.example.test.R
 import com.example.test.service.ForegroundService
 import com.example.test.service.MusicService
 
@@ -26,10 +17,7 @@ class AudioReceiver : BroadcastReceiver() {
 
     var index: Int = 0
     override fun onReceive(context: Context?, intent: Intent) {
-
-
         val actionName = intent?.getStringExtra("myAction")
-
         val intent2 = Intent(context, MusicService::class.java)
         val serviceIntent = Intent(context, MusicService::class.java)
         if (intent?.action != null) {
@@ -43,7 +31,7 @@ class AudioReceiver : BroadcastReceiver() {
                     context?.startService(intent2)
                 }
                 ForegroundService.ACTION_PLAY -> {
-                    if(ForegroundService.boolState) {
+                    if (ForegroundService.boolState) {
                         context?.stopService(serviceIntent)
                         intent2.putExtra("myAction", intent.action)
                         context?.startService(intent2)
