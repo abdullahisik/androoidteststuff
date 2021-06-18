@@ -143,6 +143,8 @@ manager.notify(1,notification)
         return remoteViews
     }
 
+public fun click() {
 
+}
 
 }

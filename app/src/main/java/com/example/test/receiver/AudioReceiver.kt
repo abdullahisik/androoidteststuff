@@ -21,6 +21,8 @@ class AudioReceiver : BroadcastReceiver() {
 
     companion object {
 
+
+
  }
 
     var index: Int = 0
@@ -35,15 +37,16 @@ class AudioReceiver : BroadcastReceiver() {
             when (intent.action) {
                 ForegroundService.ACTION_PREVIOUS -> {
                     intent2.putExtra("myAction", intent.action)
-                    context?.startService(intent2)
-                }
+                    context?.let {
+                        ContextCompat.startForegroundService(it, intent2)
+                    }                }
                 ForegroundService.ACTION_NEXT -> {
                     intent2.putExtra("myAction", intent.action)
-                    context?.startService(intent2)
-                }
+                    context?.let {
+                        ContextCompat.startForegroundService(it, intent2)
+                    }                }
                 ForegroundService.ACTION_PLAY -> {
                     if (ForegroundService.boolState) {
-                        context?.stopService(serviceIntent)
                         intent2.putExtra("myAction", intent.action)
                         context?.startService(intent2)
                         context?.let {
@@ -51,7 +54,6 @@ class AudioReceiver : BroadcastReceiver() {
                         }
                         ForegroundService.boolState = false
                     } else {
-                        context?.stopService(serviceIntent)
                         intent2.putExtra("myAction", intent.action)
                         ForegroundService.boolState = true
                         context?.let {
@@ -61,7 +63,6 @@ class AudioReceiver : BroadcastReceiver() {
                 }
             }
         }
-
 
 
 

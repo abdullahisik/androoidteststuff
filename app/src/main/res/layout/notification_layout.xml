@@ -47,7 +47,7 @@
             android:layout_marginBottom="10dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="vak vak"
+            android:text="Vak Vak"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
