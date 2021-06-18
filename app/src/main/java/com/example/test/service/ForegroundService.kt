@@ -7,10 +7,12 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.example.test.MainActivity
 import com.example.test.R
@@ -32,17 +34,24 @@ class ForegroundService : Service() {
     const val ACTION_DUCK = "ACTION_DUCK"
     var boolState : Boolean = false
 }
+    var boolStatestartForegroundService : Boolean = true
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent?.extras
+        intent!!.action
         startInForeground(false)
         return START_STICKY
     }
+
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-    @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables")
+    @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables", "NewApi")
     private fun startInForeground(boolState : Boolean) {
+        val manager = getSystemService(
+            NotificationManager::class.java
+        )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
             val serviceChannel = NotificationChannel(
                 CHANNEL_ID,
                 "test",
@@ -71,16 +80,17 @@ class ForegroundService : Service() {
         val playPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, playIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         val duckIntent = Intent(this, AudioReceiver::class.java).setAction(ACTION_DUCK)
         val duckPendingIntent = PendingIntent.getBroadcast(applicationContext , 0, duckIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        notificationLayout.setTextViewText(R.id.notification_title, "Noitfication")
+        notificationLayout.setTextViewText(R.id.notification_title, "Ördek Reis")
         val drawableIcMediaPrevious= resources.getDrawable(android.R.drawable.ic_media_previous)
         notificationLayout.setImageViewBitmap(R.id.button_previous_song,drawableToBitmap(drawableIcMediaPrevious))
         val drawableIcMediaNext = resources.getDrawable(android.R.drawable.ic_media_next)
         notificationLayout.setImageViewBitmap(R.id.button_next_song,drawableToBitmap(drawableIcMediaNext))
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-        if(MainActivity.boolIconState) {
-        val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
-        notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay)) }
+        if(ForegroundService.boolState){
+            val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
+            notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+        }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_previous_song, prevPendingIntent);
@@ -92,7 +102,15 @@ class ForegroundService : Service() {
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
             .build()
-        startForeground(1, notification)
+
+        if(boolStatestartForegroundService){
+            startForeground(1, notification)
+            boolStatestartForegroundService = false
+        }else {
+manager.notify(1,notification)
+
+        }
+
     }
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         var bitmap: Bitmap? = null
@@ -124,4 +142,7 @@ class ForegroundService : Service() {
         val remoteViews = RemoteViews(packageName, R.layout.notification_layout)
         return remoteViews
     }
+
+
+
 }

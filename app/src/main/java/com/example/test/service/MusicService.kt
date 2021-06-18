@@ -36,103 +36,103 @@ class MusicService : Service() {
         val actionName = intent?.getStringExtra("myAction")
         intent?.action
         startInForeground(true)
-        var songArray = arrayOf<Int>(
-            com.example.test.R.raw.song_1,
-            com.example.test.R.raw.song_2,
-            com.example.test.R.raw.song_3
-        )
-
-        var mp: MediaPlayer? = null
-        if (intent?.action == "ACTION_PREVIOUS") {
-            Toast.makeText(applicationContext, "previous", Toast.LENGTH_LONG).show()
-            if (index != 0) {
-                if (mp != null && mp.isPlaying()) {
-                    mp.reset()
-                    mp.stop()
-                    mp.release()
-
-                } else {
-
-                }
-                mp = MediaPlayer.create(applicationContext, songArray[index])
-                mp.start()
-                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
-                    if (!mp.isPlaying) {
-                        mp.release()
-                    } else {
-                        mp.reset()
-                        mp.stop()
-                        mp.release()
-                    }
-                })
-            }
-        }
-        if (intent?.action == "ACTION_NEXT") {
-            Toast.makeText(applicationContext, "next", Toast.LENGTH_LONG).show()
-            index += 1
-            if (index != 0 && songArray.size >= index) {
-                if (mp != null && mp.isPlaying()) {
-                    mp.stop()
-                    mp.reset()
-                    mp.release()
-                } else {
-
-                }
-                mp = MediaPlayer.create(applicationContext, songArray[index])
-                mp.start()
-                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
-                    if (!mp.isPlaying) {
-                        mp.release()
-                    } else {
-                        mp.reset()
-                        mp.stop()
-                        mp.release()
-                    }
-                })
-            }
-        }
-        if (intent?.action == "ACTION_PLAY") {
-            if (mp != null && mp.isPlaying()) {
-                mp.stop()
-                mp.release()
-            } else {
-
-            }
-            mp = MediaPlayer.create(applicationContext, songArray[index])
-            mp.start()
-        }
-        mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
-            if (!mp.isPlaying) {
-                mp.release()
-            } else {
-                mp.reset()
-                mp.stop()
-                mp.release()
-            }
-        })
-
-        if (intent?.action == "ACTION_DUCK") {
-            Toast.makeText(applicationContext, "DUCK", Toast.LENGTH_LONG).show()
-            if (mp != null && mp.isPlaying()) {
-                mp.stop()
-                mp.release()
-
-            } else {
-
-            }
-            mp = MediaPlayer.create(applicationContext, R.raw.duck_mania)
-            mp.start()
-            mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
-                if (!mp.isPlaying) {
-                    mp.release()
-                } else {
-                    mp.reset()
-                    mp.stop()
-                    mp.release()
-                }
-            })
-        }
-        return START_STICKY
+//        var songArray = arrayOf<Int>(
+//            com.example.test.R.raw.song_1,
+//            com.example.test.R.raw.song_2,
+//            com.example.test.R.raw.song_3
+//        )
+//
+//        var mp: MediaPlayer? = null
+//        if (intent?.action == "ACTION_PREVIOUS") {
+//            Toast.makeText(applicationContext, "previous", Toast.LENGTH_LONG).show()
+//            if (index != 0) {
+//                if (mp != null && mp.isPlaying()) {
+//                    mp.reset()
+//                    mp.stop()
+//                    mp.release()
+//
+//                } else {
+//
+//                }
+//                mp = MediaPlayer.create(applicationContext, songArray[index])
+//                mp.start()
+//                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+//                    if (!mp.isPlaying) {
+//                        mp.release()
+//                    } else {
+//                        mp.reset()
+//                        mp.stop()
+//                        mp.release()
+//                    }
+//                })
+//            }
+//        }
+//        if (intent?.action == "ACTION_NEXT") {
+//            Toast.makeText(applicationContext, "next", Toast.LENGTH_LONG).show()
+//            index += 1
+//            if (index != 0 && songArray.size >= index) {
+//                if (mp != null && mp.isPlaying()) {
+//                    mp.stop()
+//                    mp.reset()
+//                    mp.release()
+//                } else {
+//
+//                }
+//                mp = MediaPlayer.create(applicationContext, songArray[index])
+//                mp.start()
+//                mp.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+//                    if (!mp.isPlaying) {
+//                        mp.release()
+//                    } else {
+//                        mp.reset()
+//                        mp.stop()
+//                        mp.release()
+//                    }
+//                })
+//            }
+//        }
+//        if (intent?.action == "ACTION_PLAY") {
+//            if (mp != null && mp.isPlaying()) {
+//                mp.stop()
+//                mp.release()
+//            } else {
+//
+//            }
+//            mp = MediaPlayer.create(applicationContext, songArray[index])
+//            mp.start()
+//        }
+//        mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+//            if (!mp.isPlaying) {
+//                mp.release()
+//            } else {
+//                mp.reset()
+//                mp.stop()
+//                mp.release()
+//            }
+//        })
+//
+//        if (intent?.action == "ACTION_DUCK") {
+//            Toast.makeText(applicationContext, "DUCK", Toast.LENGTH_LONG).show()
+//            if (mp != null && mp.isPlaying()) {
+//                mp.stop()
+//                mp.release()
+//
+//            } else {
+//
+//            }
+//            mp = MediaPlayer.create(applicationContext, R.raw.duck_mania)
+//            mp.start()
+//            mp?.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+//                if (!mp.isPlaying) {
+//                    mp.release()
+//                } else {
+//                    mp.reset()
+//                    mp.stop()
+//                    mp.release()
+//                }
+//            })
+//        }
+       return START_STICKY
     }
     @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables")
     private fun startInForeground(boolState : Boolean) {
@@ -142,6 +142,7 @@ class MusicService : Service() {
                 "test",
                 NotificationManager.IMPORTANCE_DEFAULT
             )
+            serviceChannel.setSound(null,null)
             val manager = getSystemService(
                 NotificationManager::class.java
             )
