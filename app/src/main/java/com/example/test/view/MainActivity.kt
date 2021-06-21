@@ -1,19 +1,22 @@
-package com.example.test
+package com.example.test.view
 
 
-import android.content.Intent
+import android.content.*
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.Button
 import android.widget.SearchView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.test.R
 import com.example.test.adapter.SongsAdapter
 import com.example.test.databinding.ActivityMainBinding
 import com.example.test.models.Songs
+import com.example.test.receiver.AudioReceiver
 import com.example.test.service.ForegroundService
 import com.example.test.service.MusicService
 
@@ -28,9 +31,13 @@ companion object {
     lateinit var countryrv: RecyclerView
 
 
+    var myService: ForegroundService? = null
+    var isBound = false
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
+ 
+    private var receiver: BroadcastReceiver? = null
 
     private var people: ArrayList<Songs> = arrayListOf()
     private var matchedPeople: ArrayList<Songs> = arrayListOf()
@@ -41,12 +48,13 @@ companion object {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         val buttonStartService: Button? = findViewById<Button>(R.id.button_start_service)
         val buttonCloseService: Button? = findViewById<Button>(R.id.button_close_service)
-        buttonStartService?.setOnClickListener() {
+
+ buttonStartService?.setOnClickListener() {
             boolIconState = true
             startservıce()
+            showTime(view)
 
         }
         buttonCloseService?.setOnClickListener() {
@@ -60,17 +68,41 @@ companion object {
 
         this@MainActivity.runOnUiThread(java.lang.Runnable {
 
-
         })
         initRecyclerView()
         performSearch()
+        val intent = Intent(this, ForegroundService::class.java)
+        bindService(intent, myConnection, Context.BIND_AUTO_CREATE)
+
+        receiver =  AudioReceiver()
+
+
+
+    }
+
+    fun showTime(view: View) {
+        val currentTime = myService?.getCurrentTime()
+        val textView = view.findViewById(R.id.textView) as TextView
+        textView.text = currentTime
+    }
+    private val myConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder
+        ) {
+            val binder = service as ForegroundService.LocalBinder
+            myService = binder.getService()
+            isBound = true
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            isBound = false
+        }
     }
 
     public fun startservıce() {
         val serviceIntent = Intent(this, ForegroundService::class.java)
         serviceIntent.putExtra("inputExtra", "test")
         ContextCompat.startForegroundService(this, serviceIntent)
-    }
+ }
 
 
     public fun stopService() {
@@ -80,10 +112,7 @@ companion object {
         stopService(MusicserviceIntent)
     }
 
-
-
     private fun initRecyclerView() {
-
         people = arrayListOf(
             Songs("ali", 19),
             Songs("veli", 19),
@@ -93,9 +122,7 @@ companion object {
             Songs("top", 23),
             Songs("Test", 20),
             Songs("Deneme", 24),
-
         )
-
         personAdapter = SongsAdapter(people).also {
             binding.recyclerView.adapter = it
             binding.recyclerView.adapter!!.notifyDataSetChanged()

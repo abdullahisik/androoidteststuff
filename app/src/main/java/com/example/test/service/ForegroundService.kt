@@ -7,16 +7,16 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
-import android.media.MediaPlayer
+import android.os.Binder
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
-import com.example.test.MainActivity
 import com.example.test.R
 import com.example.test.receiver.AudioReceiver
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class ForegroundService : Service() {
@@ -25,7 +25,7 @@ class ForegroundService : Service() {
     }
     val CHANNEL_ID = "test"
     companion object {
- fun notifyui() {
+        fun notifyui() {
 
 }
     const val ACTION_NEXT = "ACTION_NEXT"
@@ -33,17 +33,27 @@ class ForegroundService : Service() {
     const val ACTION_PLAY = "ACTION_PLAY"
     const val ACTION_DUCK = "ACTION_DUCK"
     var boolState : Boolean = false
+
 }
     var boolStatestartForegroundService : Boolean = true
+    private val Binder = LocalBinder()
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent?.extras
         intent!!.action
         startInForeground(false)
+        playmusic(intent)
         return START_STICKY
     }
-
     override fun onBind(intent: Intent?): IBinder? {
         return null
+    }
+
+
+    fun getCurrentTime(): String {
+        val dateformat = SimpleDateFormat("HH:mm:ss MM/dd/yyyy",
+            Locale.US)
+        return dateformat.format(Date())
     }
     @SuppressLint("RemoteViewLayout", "UseCompatLoadingForDrawables", "NewApi")
     private fun startInForeground(boolState : Boolean) {
@@ -102,15 +112,12 @@ class ForegroundService : Service() {
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
             .build()
-
         if(boolStatestartForegroundService){
-            startForeground(1, notification)
+           startForeground(1, notification)
             boolStatestartForegroundService = false
         }else {
-manager.notify(1,notification)
-
+            manager.notify(1,notification)
         }
-
     }
     fun drawableToBitmap(drawable: Drawable): Bitmap? {
         var bitmap: Bitmap? = null
@@ -143,8 +150,33 @@ manager.notify(1,notification)
         return remoteViews
     }
 
-public fun click() {
+public fun playmusic(intent : Intent) {
+    val intent2 = Intent(applicationContext, ForegroundService::class.java)
+    if (intent?.action != null) {
+        when (intent.action) {
+            ForegroundService.ACTION_PREVIOUS -> {
 
-}
+            }
+            ForegroundService.ACTION_NEXT -> {
 
+            }
+            ForegroundService.ACTION_PLAY -> {
+                if (ForegroundService.boolState) {
+
+
+                } else {
+
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    inner class LocalBinder : Binder() {
+        fun getService() : ForegroundService {
+            return this@ForegroundService
+        }
+    }
 }

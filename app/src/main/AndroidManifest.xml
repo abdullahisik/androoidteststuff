@@ -11,14 +11,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Test">
         <service android:enabled="true" android:name=".service.MusicService" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".view.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".service.ForegroundService" />
+        <service android:name=".service.ForegroundService"
+            android:enabled="true"
+            android:exported="true"
+            />
         <receiver android:name=".receiver.ForegroundReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
