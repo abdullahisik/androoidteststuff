@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.core.content.ContextCompat
+import com.example.test.R
 import com.example.test.service.ForegroundService
 import com.example.test.service.singleTonExample
 
@@ -49,9 +50,38 @@ class AudioReceiver : BroadcastReceiver() {
                             ContextCompat.startForegroundService(it, intent2)
                         }
                         val ref: MediaPlayer = singleTonExample.getSingletonMedia()
-                        ref.start()
+
+                        if (ref != null && ref.isPlaying()) {
+                            ref.reset()
+                            ref.stop()
+                            ref.release()
+//TODO("BURAYA BİR BAK")
+                        }
                         ForegroundService.boolState = false
                     } else {
+                        var ref: MediaPlayer = singleTonExample.getSingletonMedia()
+                        ref.start()
+                        if (index != 0) {
+                if (ref != null && ref.isPlaying()) {
+                    ref.reset()
+                    ref.stop()
+                    ref.release()
+
+                }
+                ref = MediaPlayer.create(context, R.raw.duck_mania)
+                ref.start()
+                ref.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
+                    if (!mp.isPlaying) {
+                        mp.release()
+                    } else {
+                        mp.reset()
+                        mp.stop()
+                        mp.release()
+                    }
+                })
+            }
+        }
+
                         intent2.putExtra("myAction", intent.action)
                         ForegroundService.boolState = true
                         context?.let {
@@ -174,7 +204,7 @@ class AudioReceiver : BroadcastReceiver() {
 //        }
 //    }
     }
-}
+
     fun clickPlayer() {
 
 
