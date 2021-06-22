@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import android.os.IBinder
 import android.provider.Settings
 import androidx.annotation.Nullable
+import com.example.test.R
 
 class MusicService : Service() {
     //creating a mediaplayer object
@@ -15,28 +16,23 @@ class MusicService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
+    var sonarray = arrayOf<Int>(
+          com.example.test.R.raw.song_1,
+          com.example.test.R.raw.song_2,
+          com.example.test.R.raw.song_3
+    )
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        //getting systems default ringtone
-        player = MediaPlayer.create(
-            this,
-            Settings.System.DEFAULT_RINGTONE_URI
-        )
-        //setting loop play to true
-        //this will make the ringtone continuously playing
-        player!!.isLooping = true
-
-        //staring the player
+        player = MediaPlayer.create(this, R.raw.duck_mania)
+        player!!.isLooping = false
         player!!.start()
 
-        //we have some options for service
-        //start sticky means service will be explicity started and stopped
         return START_STICKY
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        //stopping the player when service is destroyed
         player!!.stop()
+        player = null
+
     }
 }

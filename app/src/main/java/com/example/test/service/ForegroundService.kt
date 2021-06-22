@@ -53,9 +53,7 @@ class ForegroundService : Service() {
         intent!!.action
         if(intent.action == ACTION_PLAY){
             Toast.makeText(applicationContext,"toast",Toast.LENGTH_LONG).show()
-
-
-        }
+   }
         startInForeground(false)
         return START_STICKY
     }
@@ -111,11 +109,13 @@ class ForegroundService : Service() {
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         if(ForegroundService.boolState){
-          startService(Intent(this, MusicService::class.java))
-            val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
-            notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+            startService(Intent(this, MusicService::class.java))
+
         } else {
             stopService(Intent(this, MusicService::class.java))
+            val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
+            notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+
         }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
