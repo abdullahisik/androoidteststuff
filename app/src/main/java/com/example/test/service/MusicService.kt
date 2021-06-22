@@ -10,7 +10,7 @@ import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
 
 
-class MusicService : Service(),MediaPlayer.OnCompletionListener {
+class MusicService : Service(){
     //creating a mediaplayer object
     private var player: MediaPlayer? = null
 
@@ -21,7 +21,8 @@ class MusicService : Service(),MediaPlayer.OnCompletionListener {
     var songArray = arrayOf<Int>(
           com.example.test.R.raw.song_1,
           com.example.test.R.raw.song_2,
-          com.example.test.R.raw.song_3
+          com.example.test.R.raw.song_3,
+          com.example.test.R.raw.duck_mania
     )
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val intent2 = Intent(baseContext, ForegroundService::class.java)
@@ -52,9 +53,5 @@ class MusicService : Service(),MediaPlayer.OnCompletionListener {
         player!!.pause()
         player = null
 
-    }
-
-    override fun onCompletion(mp: MediaPlayer?) {
-       print("MÜZÜK DURUR GİBİ")
     }
 }

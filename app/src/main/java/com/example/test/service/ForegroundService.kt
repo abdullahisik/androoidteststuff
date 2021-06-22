@@ -21,6 +21,7 @@ import java.util.*
 import kotlin.coroutines.coroutineContext
 
 
+@Suppress("DEPRECATION")
 class ForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
@@ -33,9 +34,6 @@ class ForegroundService : Service() {
 
     val CHANNEL_ID = "test"
     companion object {
-        fun notifyui() {
-
-}
     const val ACTION_NEXT = "ACTION_NEXT"
     const val ACTION_PREVIOUS = "ACTION_PREVIOUS"
     const val ACTION_PLAY = "ACTION_PLAY"
@@ -44,7 +42,7 @@ class ForegroundService : Service() {
     var indexSong: Int = 0
     var boolStatesMediaPlayer : Boolean = true
     var prevState : Boolean = false
-        var nextState : Boolean  = false
+    var nextState : Boolean  = false
 }
     var boolStatestartForegroundService : Boolean = true
     private val Binder = LocalBinder()
@@ -62,7 +60,6 @@ class ForegroundService : Service() {
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
     fun getCurrentTime(): String {
         val dateformat = SimpleDateFormat("HH:mm:ss MM/dd/yyyy",
             Locale.US)
@@ -112,17 +109,24 @@ class ForegroundService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         if(ForegroundService.boolState && prevState == false && nextState == false){
             startService(Intent(this, MusicService::class.java))
-        } else {
+        } else if(ForegroundService.boolState == false ) {
             stopService(Intent(this, MusicService::class.java))
             val drawableIcMediaPlay = resources.getDrawable(R.drawable.ic_play_button)
             notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         }
-        if(prevState)
+         else if(prevState)
         {
-
+            ForegroundService.indexSong -= 1
+            stopService(Intent(this, MusicService::class.java))
+            startService(Intent(this, MusicService::class.java))
+            prevState = false
         }
-        if(nextState){
-
+        else if(nextState)
+        {
+            ForegroundService.indexSong += 1
+            stopService(Intent(this, MusicService::class.java))
+            startService(Intent(this, MusicService::class.java))
+            nextState = false
         }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
