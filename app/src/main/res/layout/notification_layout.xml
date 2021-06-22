@@ -61,23 +61,24 @@
                 android:id="@+id/button_previous_song"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/ic_baseline_skip_previous_24" />
+                android:layout_weight="0.75"
+                app:srcCompat="@drawable/ic_left"
+                tools:ignore="VectorDrawableCompat" />
 
             <ImageView
                 android:id="@+id/button_pause_song"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="1.25"
                 app:srcCompat="@drawable/ic_baseline_play_circle_filled_24" />
 
             <ImageView
                 android:id="@+id/button_next_song"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_weight="0.75"
 
-                app:srcCompat="@drawable/ic_baseline_skip_next_24" />
+                app:srcCompat="@drawable/ic_right_arrow" />
 
         </LinearLayout>
 

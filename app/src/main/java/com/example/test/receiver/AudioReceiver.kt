@@ -16,10 +16,9 @@ class AudioReceiver : BroadcastReceiver() {
 
     companion object {
 
-
     }
 
-    var index: Int = 0
+
     override fun onReceive(context: Context?, intent: Intent) {
         val actionName = intent?.getStringExtra("myAction")
         val intent2 = Intent(context, ForegroundService::class.java)
@@ -65,7 +64,6 @@ class AudioReceiver : BroadcastReceiver() {
                         }
                         ForegroundService.boolStatesMediaPlayer = true
                     }
-
                 }
             }
         }

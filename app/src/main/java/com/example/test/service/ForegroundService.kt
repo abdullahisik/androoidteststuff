@@ -41,8 +41,10 @@ class ForegroundService : Service() {
     const val ACTION_PLAY = "ACTION_PLAY"
     const val ACTION_DUCK = "ACTION_DUCK"
     var boolState : Boolean = false
-        var boolStatesMediaPlayer : Boolean = true
-
+    var indexSong: Int = 0
+    var boolStatesMediaPlayer : Boolean = true
+    var prevState : Boolean = false
+        var nextState : Boolean  = false
 }
     var boolStatestartForegroundService : Boolean = true
     private val Binder = LocalBinder()
@@ -106,15 +108,20 @@ class ForegroundService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_previous_song,drawableToBitmap(drawableIcMediaPrevious))
         val drawableIcMediaNext = resources.getDrawable(android.R.drawable.ic_media_next)
         notificationLayout.setImageViewBitmap(R.id.button_next_song,drawableToBitmap(drawableIcMediaNext))
-        val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
+        val drawableIcMediaPlay = resources.getDrawable(R.drawable.ic_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
-        if(ForegroundService.boolState){
+        if(ForegroundService.boolState && prevState == false && nextState == false){
             startService(Intent(this, MusicService::class.java))
-
         } else {
             stopService(Intent(this, MusicService::class.java))
-            val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
+            val drawableIcMediaPlay = resources.getDrawable(R.drawable.ic_play_button)
             notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+        }
+        if(prevState)
+        {
+
+        }
+        if(nextState){
 
         }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
@@ -127,6 +134,7 @@ class ForegroundService : Service() {
             .setSmallIcon(R.drawable.ic_launcher_foreground)
             .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCustomContentView(notificationLayout)
+            .setSound(null)
             .build()
         if(boolStatestartForegroundService){
            startForeground(1, notification)
