@@ -12,17 +12,25 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.widget.RemoteViews
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.example.test.R
 import com.example.test.receiver.AudioReceiver
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.coroutines.coroutineContext
 
 
 class ForegroundService : Service() {
     override fun onCreate() {
         super.onCreate()
+
+        singletonexample = singleTonExample.getInstance()
+
+
     }
+
+
     val CHANNEL_ID = "test"
     companion object {
         fun notifyui() {
@@ -33,22 +41,27 @@ class ForegroundService : Service() {
     const val ACTION_PLAY = "ACTION_PLAY"
     const val ACTION_DUCK = "ACTION_DUCK"
     var boolState : Boolean = false
+        var boolStatesMediaPlayer : Boolean = true
 
 }
     var boolStatestartForegroundService : Boolean = true
     private val Binder = LocalBinder()
+    var singletonexample: singleTonExample? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val extras = intent?.extras
         intent!!.action
+        if(intent.action == ACTION_PLAY){
+            Toast.makeText(applicationContext,"toast",Toast.LENGTH_LONG).show()
+
+
+        }
         startInForeground(false)
-        playmusic(intent)
         return START_STICKY
     }
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
 
     fun getCurrentTime(): String {
         val dateformat = SimpleDateFormat("HH:mm:ss MM/dd/yyyy",
@@ -98,8 +111,11 @@ class ForegroundService : Service() {
         val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_pause)
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         if(ForegroundService.boolState){
+          startService(Intent(this, MusicService::class.java))
             val drawableIcMediaPlay = resources.getDrawable(android.R.drawable.ic_media_play)
             notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
+        } else {
+            stopService(Intent(this, MusicService::class.java))
         }
         notificationLayout.setOnClickPendingIntent(R.id.button_pause_song, playPendingIntent);
         notificationLayout.setOnClickPendingIntent(R.id.button_next_song, nextPendingIntent);
@@ -149,31 +165,6 @@ class ForegroundService : Service() {
         val remoteViews = RemoteViews(packageName, R.layout.notification_layout)
         return remoteViews
     }
-
-public fun playmusic(intent : Intent) {
-    val intent2 = Intent(applicationContext, ForegroundService::class.java)
-    if (intent?.action != null) {
-        when (intent.action) {
-            ForegroundService.ACTION_PREVIOUS -> {
-
-            }
-            ForegroundService.ACTION_NEXT -> {
-
-            }
-            ForegroundService.ACTION_PLAY -> {
-                if (ForegroundService.boolState) {
-
-
-                } else {
-
-                    }
-                }
-            }
-        }
-    }
-
-
-
     inner class LocalBinder : Binder() {
         fun getService() : ForegroundService {
             return this@ForegroundService

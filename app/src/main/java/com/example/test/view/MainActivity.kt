@@ -37,11 +37,13 @@ companion object {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
  
-    private var receiver: BroadcastReceiver? = null
+    private var receiverAudioReceiver: BroadcastReceiver? = null
 
     private var people: ArrayList<Songs> = arrayListOf()
     private var matchedPeople: ArrayList<Songs> = arrayListOf()
     private var personAdapter: SongsAdapter = SongsAdapter(people)
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -55,7 +57,6 @@ companion object {
             boolIconState = true
             startservıce()
             showTime(view)
-
         }
         buttonCloseService?.setOnClickListener() {
             stopService()
@@ -74,7 +75,6 @@ companion object {
         val intent = Intent(this, ForegroundService::class.java)
         bindService(intent, myConnection, Context.BIND_AUTO_CREATE)
 
-        receiver =  AudioReceiver()
 
 
 
@@ -163,10 +163,22 @@ companion object {
         }
     }
 
+
     private fun updateRecyclerView() {
         binding.recyclerView.apply {
             personAdapter.list = matchedPeople
             personAdapter.notifyDataSetChanged()
         }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 }

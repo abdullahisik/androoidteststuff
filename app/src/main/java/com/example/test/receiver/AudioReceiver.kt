@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
 import androidx.core.content.ContextCompat
-import com.example.test.R
 import com.example.test.service.ForegroundService
+import com.example.test.service.MusicService
 import com.example.test.service.singleTonExample
 
 
@@ -20,15 +20,16 @@ class AudioReceiver : BroadcastReceiver() {
     }
 
     var index: Int = 0
-
     override fun onReceive(context: Context?, intent: Intent) {
         val actionName = intent?.getStringExtra("myAction")
         val intent2 = Intent(context, ForegroundService::class.java)
         val serviceIntent = Intent(context, ForegroundService::class.java)
+
         var singletonexample: singleTonExample? = null
         singletonexample = singleTonExample.getInstance()
         singletonexample.init(context)
-     if (intent?.action != null) {
+        var ref: MediaPlayer? = singleTonExample.getSingletonMedia()
+        if (intent?.action != null) {
             when (intent.action) {
                 ForegroundService.ACTION_PREVIOUS -> {
                     intent2.putExtra("myAction", intent.action)
@@ -43,60 +44,42 @@ class AudioReceiver : BroadcastReceiver() {
                     }
                 }
                 ForegroundService.ACTION_PLAY -> {
-                    if (ForegroundService.boolState) {
+                    if (ForegroundService.boolStatesMediaPlayer) {
                         intent2.putExtra("myAction", intent.action)
                         context?.startService(intent2)
                         context?.let {
                             ContextCompat.startForegroundService(it, intent2)
                         }
-                        val ref: MediaPlayer = singleTonExample.getSingletonMedia()
-
-                        if (ref != null && ref.isPlaying()) {
-                            ref.reset()
-                            ref.stop()
-                            ref.release()
-//TODO("BURAYA BİR BAK")
-                        }
+//                        ref = MediaPlayer.create(context, R.raw.duck_mania)
+//                        ref.start()
+                        ForegroundService.boolStatesMediaPlayer = false
                         ForegroundService.boolState = false
-                    } else {
-                        var ref: MediaPlayer = singleTonExample.getSingletonMedia()
-                        ref.start()
-                        if (index != 0) {
-                if (ref != null && ref.isPlaying()) {
-                    ref.reset()
-                    ref.stop()
-                    ref.release()
-
-                }
-                ref = MediaPlayer.create(context, R.raw.duck_mania)
-                ref.start()
-                ref.setOnCompletionListener(MediaPlayer.OnCompletionListener { mp ->
-                    if (!mp.isPlaying) {
-                        mp.release()
-                    } else {
-                        mp.reset()
-                        mp.stop()
-                        mp.release()
                     }
-                })
-            }
-        }
-
+                    else{
+                        val serviceIntent = Intent(context, ForegroundService::class.java)
+                        context?.stopService(serviceIntent)
                         intent2.putExtra("myAction", intent.action)
                         ForegroundService.boolState = true
                         context?.let {
                             ContextCompat.startForegroundService(it, intent2)
                         }
+                        ForegroundService.boolStatesMediaPlayer = true
+//
+//                        ref?.release()
+//                        ref = null
                     }
+//                    ref?.setOnCompletionListener {
+//                        MediaPlayer.OnCompletionListener {
+//                            it.reset()
+//                            it.stop()
+//                            it.release()
+//                        }
+//                    }
                 }
             }
         }
-
-
-
-
-
-
+    }
+}
 
 //
 //        var myArray = arrayOf<Int>(
@@ -203,7 +186,6 @@ class AudioReceiver : BroadcastReceiver() {
 //
 //        }
 //    }
-    }
 
     fun clickPlayer() {
 
