@@ -59,7 +59,7 @@
         android:layout_width="106dp"
         android:layout_height="33dp"
         android:gravity="center"
-        android:text="Teste"
+        android:text=""
         app:layout_constraintBottom_toTopOf="@+id/button_start_service"
 
         app:layout_constraintEnd_toEndOf="parent"

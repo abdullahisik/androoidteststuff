@@ -35,12 +35,14 @@ class AudioReceiver : BroadcastReceiver() {
                     context?.let {
                         ContextCompat.startForegroundService(it, intent2)
                     }
+                    ForegroundService.prevState = true
                 }
                 ForegroundService.ACTION_NEXT -> {
                     intent2.putExtra("myAction", intent.action)
                     context?.let {
                         ContextCompat.startForegroundService(it, intent2)
                     }
+                    ForegroundService.nextState = true
                 }
                 ForegroundService.ACTION_PLAY -> {
                     if (ForegroundService.boolStatesMediaPlayer) {

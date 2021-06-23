@@ -106,10 +106,11 @@ companion object {
 
 
     public fun stopService() {
-        val serviceIntent = Intent(this, ForegroundService::class.java)
-        stopService(serviceIntent)
         val MusicserviceIntent = Intent(this, MusicService::class.java)
         stopService(MusicserviceIntent)
+        val serviceIntent = Intent(this, ForegroundService::class.java)
+        stopService(serviceIntent)
+
     }
 
     private fun initRecyclerView() {

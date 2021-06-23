@@ -26,7 +26,8 @@ class MusicService : Service(){
     )
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val intent2 = Intent(baseContext, ForegroundService::class.java)
-
+        if(ForegroundService.indexSong > 3) ForegroundService.indexSong = 0
+        else if(ForegroundService.indexSong < 0) ForegroundService.indexSong = 3
         player = MediaPlayer.create(this, songArray[ForegroundService.indexSong])
         player!!.isLooping = false
         player!!.start()

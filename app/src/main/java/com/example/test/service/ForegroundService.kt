@@ -109,6 +109,7 @@ class ForegroundService : Service() {
         notificationLayout.setImageViewBitmap(R.id.button_pause_song,drawableToBitmap(drawableIcMediaPlay))
         if(ForegroundService.boolState && prevState == false && nextState == false){
             startService(Intent(this, MusicService::class.java))
+
         } else if(ForegroundService.boolState == false ) {
             stopService(Intent(this, MusicService::class.java))
             val drawableIcMediaPlay = resources.getDrawable(R.drawable.ic_play_button)
